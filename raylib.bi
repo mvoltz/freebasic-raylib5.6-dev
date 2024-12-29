@@ -714,7 +714,6 @@ enum
     SHADER_LOC_VERTEX_BONEWEIGHTS
     SHADER_LOC_BONE_MATRICES 
     SHADER_LOC_VERTEX_INSTANCE_TX 
-} ShaderLocationIndex;
 end enum
 
 const SHADER_LOC_MAP_DIFFUSE = SHADER_LOC_MAP_ALBEDO
@@ -976,9 +975,9 @@ declare function GetFrameTime() as single
 declare function GetTime() as double
 declare function GetFPS() as long
 
-declare function SwapScreenBuffer()
-declare function PollInputEvents()
-declare function WaitTime(byval seconds as double)
+declare sub SwapScreenBuffer()
+declare sub PollInputEvents()
+declare sub WaitTime(byval seconds as double)
 
 declare sub SetRandomSeed(byval seed as ulong)
 declare function GetRandomValue(byval min as long, byval max as long) as long
@@ -1032,12 +1031,14 @@ declare function IsFileDropped() as boolean
 declare function LoadDroppedFiles() as FilePathList
 declare sub UnloadDroppedFiles(byval files as FilePathList)
 declare function GetFileModTime(byval fileName as const zstring ptr) as clong
-''STOPPED HERE
 
 declare function CompressData(byval data_ as const ubyte ptr, byval dataSize as long, byval compDataSize as long ptr) as ubyte ptr
 declare function DecompressData(byval compData as const ubyte ptr, byval compDataSize as long, byval dataSize as long ptr) as ubyte ptr
 declare function EncodeDataBase64(byval data_ as const ubyte ptr, byval dataSize as long, byval outputSize as long ptr) as zstring ptr
 declare function DecodeDataBase64(byval data_ as const ubyte ptr, byval outputSize as long ptr) as ubyte ptr
+declare function ComputeCRC32(byval data_ as ubyte ptr, byval dataSize as long) as ulong
+declare function ComputeMD5(byval data_ as ubyte ptr, byval dataSize as long) as ulong
+declare function ComputeSHA1(byval data_ as ubyte ptr, byval dataSize as long) as ulong
 
 declare function LoadAutomationEventList(byval fileName as const zstring ptr) as AutomationEventList
 declare sub UnloadAutomationEventList(byval list_ as AutomationEventList ptr)
@@ -1054,9 +1055,11 @@ declare function IsKeyPressedRepeat(byval key as long) as boolean
 declare function IsKeyDown(byval key as long) as boolean
 declare function IsKeyReleased(byval key as long) as boolean
 declare function IsKeyUp(byval key as long) as boolean
-declare sub SetExitKey(byval key as long)
 declare function GetKeyPressed() as long
 declare function GetCharPressed() as long
+declare function GetKeyName(byval key as ulong) as const zstring ptr
+declare sub SetExitKey(byval key as long)
+
 declare function IsGamepadAvailable(byval gamepad as long) as boolean
 declare function GetGamepadName(byval gamepad as long) as const zstring ptr
 declare function IsGamepadButtonPressed(byval gamepad as long, byval button as long) as boolean
@@ -1067,6 +1070,8 @@ declare function GetGamepadButtonPressed() as long
 declare function GetGamepadAxisCount(byval gamepad as long) as long
 declare function GetGamepadAxisMovement(byval gamepad as long, byval axis as long) as single
 declare function SetGamepadMappings(byval mappings as const zstring ptr) as long
+declare sub SetGamepadVibration(byval gamepad as long, byval leftMotor as single, byval rightMotor as single, byval duration as single)
+
 declare function IsMouseButtonPressed(byval button as long) as boolean
 declare function IsMouseButtonDown(byval button as long) as boolean
 declare function IsMouseButtonReleased(byval button as long) as boolean
@@ -1081,11 +1086,13 @@ declare sub SetMouseScale(byval scaleX as single, byval scaleY as single)
 declare function GetMouseWheelMove() as single
 declare function GetMouseWheelMoveV() as Vector2
 declare sub SetMouseCursor(byval cursor as long)
+
 declare function GetTouchX() as long
 declare function GetTouchY() as long
 declare function GetTouchPosition(byval index as long) as Vector2
 declare function GetTouchPointId(byval index as long) as long
 declare function GetTouchPointCount() as long
+
 declare sub SetGesturesEnabled(byval flags as ulong)
 declare function IsGestureDetected(byval gesture as ulong) as boolean
 declare function GetGestureDetected() as long
@@ -1094,24 +1101,28 @@ declare function GetGestureDragVector() as Vector2
 declare function GetGestureDragAngle() as single
 declare function GetGesturePinchVector() as Vector2
 declare function GetGesturePinchAngle() as single
+
 declare sub UpdateCamera(byval camera as Camera ptr, byval mode as long)
 declare sub UpdateCameraPro(byval camera as Camera ptr, byval movement as Vector3, byval rotation as Vector3, byval zoom as single)
+
 declare sub SetShapesTexture(byval texture as Texture2D, byval source as Rectangle)
+declare function GetShapesTexture() as Texture2D
+declare function GetShapesTextureRectangle() as Rectangle
+
 declare sub DrawPixel(byval posX as long, byval posY as long, byval color as RLColor)
 declare sub DrawPixelV(byval position as Vector2, byval color as RLColor)
 declare sub DrawLine(byval startPosX as long, byval startPosY as long, byval endPosX as long, byval endPosY as long, byval color as RLColor)
 declare sub DrawLineV(byval startPos as Vector2, byval endPos as Vector2, byval color as RLColor)
 declare sub DrawLineEx(byval startPos as Vector2, byval endPos as Vector2, byval thick as single, byval color as RLColor)
-declare sub DrawLineBezier(byval startPos as Vector2, byval endPos as Vector2, byval thick as single, byval color as RLColor)
-declare sub DrawLineBezierQuad(byval startPos as Vector2, byval endPos as Vector2, byval controlPos as Vector2, byval thick as single, byval color as RLColor)
-declare sub DrawLineBezierCubic(byval startPos as Vector2, byval endPos as Vector2, byval startControlPos as Vector2, byval endControlPos as Vector2, byval thick as single, byval color as RLColor)
 declare sub DrawLineStrip(byval points as Vector2 ptr, byval pointCount as long, byval color as RLColor)
+declare sub DrawLineBezier(byval startPos as Vector2, byval endPos as Vector2, byval thick as single, byval color as RLColor)
 declare sub DrawCircle(byval centerX as long, byval centerY as long, byval radius as single, byval color as RLColor)
 declare sub DrawCircleSector(byval center as Vector2, byval radius as single, byval startAngle as single, byval endAngle as single, byval segments as long, byval color as RLColor)
 declare sub DrawCircleSectorLines(byval center as Vector2, byval radius as single, byval startAngle as single, byval endAngle as single, byval segments as long, byval color as RLColor)
 declare sub DrawCircleGradient(byval centerX as long, byval centerY as long, byval radius as single, byval color1 as RLColor, byval color2 as RLColor)
 declare sub DrawCircleV(byval center as Vector2, byval radius as single, byval color as RLColor)
 declare sub DrawCircleLines(byval centerX as long, byval centerY as long, byval radius as single, byval color as RLColor)
+declare sub DrawCircleLinesV(byval center as Vector2, byval radius as single, byval color as RLColor)
 declare sub DrawEllipse(byval centerX as long, byval centerY as long, byval radiusH as single, byval radiusV as single, byval color as RLColor)
 declare sub DrawEllipseLines(byval centerX as long, byval centerY as long, byval radiusH as single, byval radiusV as single, byval color as RLColor)
 declare sub DrawRing(byval center as Vector2, byval innerRadius as single, byval outerRadius as single, byval startAngle as single, byval endAngle as single, byval segments as long, byval color as RLColor)
@@ -1126,7 +1137,8 @@ declare sub DrawRectangleGradientEx(byval rec as Rectangle, byval col1 as RLColo
 declare sub DrawRectangleLines(byval posX as long, byval posY as long, byval width_ as long, byval height_ as long, byval color as RLColor)
 declare sub DrawRectangleLinesEx(byval rec as Rectangle, byval lineThick as single, byval color as RLColor)
 declare sub DrawRectangleRounded(byval rec as Rectangle, byval roundness as single, byval segments as long, byval color as RLColor)
-declare sub DrawRectangleRoundedLines(byval rec as Rectangle, byval roundness as single, byval segments as long, byval lineThick as single, byval color as RLColor)
+declare sub DrawRectangleRoundedLines(byval rec as Rectangle, byval roundness as single, byval segments as long, byval color as RLColor)
+declare sub DrawRectangleRoundedLinesEx(byval rec as Rectangle, byval roundness as single, byval segments as long, byval lineThick as single, byval color as RLColor)
 declare sub DrawTriangle(byval v1 as Vector2, byval v2 as Vector2, byval v3 as Vector2, byval color as RLColor)
 declare sub DrawTriangleLines(byval v1 as Vector2, byval v2 as Vector2, byval v3 as Vector2, byval color as RLColor)
 declare sub DrawTriangleFan(byval points as Vector2 ptr, byval pointCount as long, byval color as RLColor)
@@ -1134,6 +1146,50 @@ declare sub DrawTriangleStrip(byval points as Vector2 ptr, byval pointCount as l
 declare sub DrawPoly(byval center as Vector2, byval sides as long, byval radius as single, byval rotation as single, byval color as RLColor)
 declare sub DrawPolyLines(byval center as Vector2, byval sides as long, byval radius as single, byval rotation as single, byval color as RLColor)
 declare sub DrawPolyLinesEx(byval center as Vector2, byval sides as long, byval radius as single, byval rotation as single, byval lineThick as single, byval color as RLColor)
+
+'' Splines drawing functions
+'' -------------------------
+
+'' RLAPI void DrawSplineLinear(const Vector2 *points, int pointCount, float thick, Color color);            // Draw spline: Linear, minimum 2 points
+declare sub DrawSplineLinear(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
+
+'' RLAPI void DrawSplineBasis(const Vector2 *points, int pointCount, float thick, Color color);             // Draw spline: B-Spline, minimum 4 points
+declare sub DrawSplineBasis(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
+
+'' RLAPI void DrawSplineCatmullRom(const Vector2 *points, int pointCount, float thick, Color color);        // Draw spline: Catmull-Rom, minimum 4 points
+declare sub DrawSplineCatmullRom(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
+
+'' RLAPI void DrawSplineBezierQuadratic(const Vector2 *points, int pointCount, float thick, Color color);   // Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
+declare sub DrawSplineBezierQuadratic(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
+
+'' RLAPI void DrawSplineBezierCubic(const Vector2 *points, int pointCount, float thick, Color color);       // Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
+declare sub DrawSplineBezierCubic(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
+
+'' RLAPI void DrawSplineSegmentLinear(Vector2 p1, Vector2 p2, float thick, Color color);                    // Draw spline segment: Linear, 2 points
+declare sub DrawSplineSegmentLinear(byval p1 as Vector2, byval p2 as Vector2, byval thick as single, byval color as RLColor)
+
+'' RLAPI void DrawSplineSegmentBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color); // Draw spline segment: B-Spline, 4 points
+
+'' RLAPI void DrawSplineSegmentCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color); // Draw spline segment: Catmull-Rom, 4 points
+
+'' RLAPI void DrawSplineSegmentBezierQuadratic(Vector2 p1, Vector2 c2, Vector2 p3, float thick, Color color); // Draw spline segment: Quadratic Bezier, 2 points, 1 control point
+
+'' RLAPI void DrawSplineSegmentBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float thick, Color color); // Draw spline segment: Cubic Bezier, 2 points, 2 control points
+ 
+''  Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
+''  -----------------------------------------------------------------------
+
+'' RLAPI Vector2 GetSplinePointLinear(Vector2 startPos, Vector2 endPos, float t);                           // Get (evaluate) spline point: Linear
+
+'' RLAPI Vector2 GetSplinePointBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t);              // Get (evaluate) spline point: B-Spline
+
+'' RLAPI Vector2 GetSplinePointCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t);         // Get (evaluate) spline point: Catmull-Rom
+
+'' RLAPI Vector2 GetSplinePointBezierQuad(Vector2 p1, Vector2 c2, Vector2 p3, float t);                     // Get (evaluate) spline point: Quadratic Bezier
+
+'' RLAPI Vector2 GetSplinePointBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t);        // Get (evaluate) spline point: Cubic Bezier
+
+
 declare function CheckCollisionRecs(byval rec1 as Rectangle, byval rec2 as Rectangle) as boolean
 declare function CheckCollisionCircles(byval center1 as Vector2, byval radius1 as single, byval center2 as Vector2, byval radius2 as single) as boolean
 declare function CheckCollisionCircleRec(byval center as Vector2, byval radius as single, byval rec as Rectangle) as boolean
