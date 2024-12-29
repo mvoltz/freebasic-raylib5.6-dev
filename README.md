@@ -1,10 +1,13 @@
-# raylib-freebasic -> v5.5 (WIP) - DO NOT USE YET
+# raylib-freebasic -> v5.5/5.6 (WIP) - DO NOT USE YET
 
 [FreeBasic](https://freebasic.net/) bindings for [raylib](https://github.com/raysan5/raylib)  
 
 'raylib.bi' is coming along nicely.
-'raygui.bi' is going to take some noodling - going from 3.x to 4.5
-'raymath.bi' not started
+
+'raygui.bi' is going to take some noodling - going from 3.x to 4.5.
+
+'raymath.bi' is not yet started.
+
   
 Lib | Linux | Windows | Mac | BSD |
 --- | ----- | ------- | --- | --- |
