@@ -9,7 +9,12 @@
 extern "C"
 
 #define RAYGUI_H
-#define RAYGUI_VERSION "3.2"
+#define RAYGUI_VERSION_MAJOR 4
+#define RAYGUI_VERSION_MINOR 5
+#define RAYGUI_VERSION_PATCH 0
+#define RAYGUI_VERSION "4.5-dev"
+
+
 #define RAYGUI_MALLOC(sz) malloc(sz)
 #define RAYGUI_CALLOC(n, sz) calloc(n, sz)
 #define RAYGUI_FREE(p) free(p)
@@ -19,7 +24,7 @@ extern "C"
 type GuiStyleProp
 	controlId as ushort
 	propertyId as ushort
-	propertyValue as ulong
+	propertyValue as long
 end type
 
 type GuiState as long
@@ -159,60 +164,83 @@ end enum
 
 const SCROLLBAR_LEFT_SIDE = 0
 const SCROLLBAR_RIGHT_SIDE = 1
+
+'' Global GUI state control
 declare sub GuiEnable()
 declare sub GuiDisable()
 declare sub GuiLock()
 declare sub GuiUnlock()
 declare function GuiIsLocked() as boolean
-declare sub GuiFade(byval alpha as single)
+declare sub GuiSetAlpha(byval alpha as single)
 declare sub GuiSetState(byval state as long)
 declare function GuiGetState() as long
+
+'' Font set/get
 declare sub GuiSetFont(byval font as Font)
 declare function GuiGetFont() as Font
+
+'' Style set/get
 declare sub GuiSetStyle(byval control as long, byval property as long, byval value as long)
 declare function GuiGetStyle(byval control as long, byval property as long) as long
-declare function GuiWindowBox(byval bounds as Rectangle, byval title as const zstring ptr) as boolean
-declare sub GuiGroupBox(byval bounds as Rectangle, byval text as const zstring ptr)
-declare sub GuiLine(byval bounds as Rectangle, byval text as const zstring ptr)
-declare sub GuiPanel(byval bounds as Rectangle, byval text as const zstring ptr)
-declare function GuiScrollPanel(byval bounds as Rectangle, byval text as const zstring ptr, byval content as Rectangle, byval scroll as Vector2 ptr) as Rectangle
-declare sub GuiLabel(byval bounds as Rectangle, byval text as const zstring ptr)
-declare function GuiButton(byval bounds as Rectangle, byval text as const zstring ptr) as boolean
-declare function GuiLabelButton(byval bounds as Rectangle, byval text as const zstring ptr) as boolean
-declare function GuiToggle(byval bounds as Rectangle, byval text as const zstring ptr, byval active as boolean) as boolean
+
+'' Styles loading
+declare sub GuiLoadStyle(byval fileName as const zstring ptr)
+declare sub GuiLoadStyleDefault()
+
+'' Tooltips management
+declare sub GuiEnableTooltip()
+declare sub GuiDisableTooltipe()
+declare sub GuiSetTooltip(byval tooltip as const zstring ptr)
+
+'' Icons
+declare function GuiIconText(byval iconId as long, byval text as const zstring ptr) as const zstring ptr
+#ifndef RAYGUI_NO_ICONS
+declare sub GuiSetIconScale(byval scale as long)
+declare function GuiGetIcons() as ulong ptr
+declare function GuiLoadIcons(byval filename as const zstring ptr, byval loadIconsName as boolean) as zstring ptr ptr
+declare sub GuiDrawIcon(byval iconId as long, byval posX as long, byval pixelSize as long, byval color as RLColor)
+#endif
+
+'' Container/separator controls
+declare function GuiWindowBox(byval bounds as Rectangle, byval title as const zstring ptr) as long
+declare function GuiGroupBox(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiLine(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiPanel(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiTabBar(byval bounds as Rectangle, byval text as zstring ptr ptr, byval count as long, byval active as long ptr) as long
+declare function GuiScrollPanel(byval bounds as Rectangle, byval text as const zstring ptr, byval content as Rectangle, byval scroll as Vector2 ptr, by value view as Rectangle ptr) as long
+
+'' Basic controls 
+declare function GuiLabel(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiButton(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiLabelButton(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiToggle(byval bounds as Rectangle, byval text as const zstring ptr, byval active as boolean) as long
 declare function GuiToggleGroup(byval bounds as Rectangle, byval text as const zstring ptr, byval active as long) as long
-declare function GuiCheckBox(byval bounds as Rectangle, byval text as const zstring ptr, byval checked as boolean) as boolean
+declare function GuiCheckBox(byval bounds as Rectangle, byval text as const zstring ptr, byval checked as boolean) as long
 declare function GuiComboBox(byval bounds as Rectangle, byval text as const zstring ptr, byval active as long) as long
-declare function GuiDropdownBox(byval bounds as Rectangle, byval text as const zstring ptr, byval active as long ptr, byval editMode as boolean) as boolean
-declare function GuiSpinner(byval bounds as Rectangle, byval text as const zstring ptr, byval value as long ptr, byval minValue as long, byval maxValue as long, byval editMode as boolean) as boolean
-declare function GuiValueBox(byval bounds as Rectangle, byval text as const zstring ptr, byval value as long ptr, byval minValue as long, byval maxValue as long, byval editMode as boolean) as boolean
-declare function GuiTextBox(byval bounds as Rectangle, byval text as zstring ptr, byval textSize as long, byval editMode as boolean) as boolean
-declare function GuiTextBoxMulti(byval bounds as Rectangle, byval text as zstring ptr, byval textSize as long, byval editMode as boolean) as boolean
-declare function GuiSlider(byval bounds as Rectangle, byval textLeft as const zstring ptr, byval textRight as const zstring ptr, byval value as single, byval minValue as single, byval maxValue as single) as single
-declare function GuiSliderBar(byval bounds as Rectangle, byval textLeft as const zstring ptr, byval textRight as const zstring ptr, byval value as single, byval minValue as single, byval maxValue as single) as single
-declare function GuiProgressBar(byval bounds as Rectangle, byval textLeft as const zstring ptr, byval textRight as const zstring ptr, byval value as single, byval minValue as single, byval maxValue as single) as single
-declare sub GuiStatusBar(byval bounds as Rectangle, byval text as const zstring ptr)
-declare sub GuiDummyRec(byval bounds as Rectangle, byval text as const zstring ptr)
-declare function GuiGrid(byval bounds as Rectangle, byval text as const zstring ptr, byval spacing as single, byval subdivs as long) as Vector2
+
+declare function GuiDropdownBox(byval bounds as Rectangle, byval text as const zstring ptr, byval active as long ptr, byval editMode as boolean) as long
+declare function GuiSpinner(byval bounds as Rectangle, byval text as const zstring ptr, byval value as long ptr, byval minValue as long, byval maxValue as long, byval editMode as boolean) as long
+declare function GuiValueBox(byval bounds as Rectangle, byval text as const zstring ptr, byval value as long ptr, byval minValue as long, byval maxValue as long, byval editMode as boolean) as long
+declare function GuiValueBoxFloat(byval bounds as Rectangle, byval text as const zstring ptr, byval value as long ptr, byval minValue as long, byval maxValue as long, byval editMode as boolean) as long
+declare function GuiTextBox(byval bounds as Rectangle, byval text as zstring ptr, byval textSize as long, byval editMode as boolean) as long
+
+declare function GuiSlider(byval bounds as Rectangle, byval textLeft as const zstring ptr, byval textRight as const zstring ptr, byval value as single, byval minValue as single, byval maxValue as single) as long
+declare function GuiSliderBar(byval bounds as Rectangle, byval textLeft as const zstring ptr, byval textRight as const zstring ptr, byval value as single, byval minValue as single, byval maxValue as single) as long
+declare function GuiProgressBar(byval bounds as Rectangle, byval textLeft as const zstring ptr, byval textRight as const zstring ptr, byval value as single, byval minValue as single, byval maxValue as single) as long
+declare function GuiStatusBar(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiDummyRec(byval bounds as Rectangle, byval text as const zstring ptr) as long
+declare function GuiGrid(byval bounds as Rectangle, byval text as const zstring ptr, byval spacing as single, byval subdivs as long) as long
+
 declare function GuiListView(byval bounds as Rectangle, byval text as const zstring ptr, byval scrollIndex as long ptr, byval active as long) as long
 declare function GuiListViewEx(byval bounds as Rectangle, byval text as const zstring ptr ptr, byval count as long, byval focus as long ptr, byval scrollIndex as long ptr, byval active as long) as long
 declare function GuiMessageBox(byval bounds as Rectangle, byval title as const zstring ptr, byval message as const zstring ptr, byval buttons as const zstring ptr) as long
 declare function GuiTextInputBox(byval bounds as Rectangle, byval title as const zstring ptr, byval message as const zstring ptr, byval buttons as const zstring ptr, byval text as zstring ptr, byval textMaxSize as long, byval secretViewActive as long ptr) as long
-declare function GuiColorPicker(byval bounds as Rectangle, byval text as const zstring ptr, byval color as RLColor) as RLColor
-declare function GuiColorPanel(byval bounds as Rectangle, byval text as const zstring ptr, byval color as RLColor) as RLColor
-declare function GuiColorBarAlpha(byval bounds as Rectangle, byval text as const zstring ptr, byval alpha as single) as single
-declare function GuiColorBarHue(byval bounds as Rectangle, byval text as const zstring ptr, byval value as single) as single
-declare sub GuiLoadStyle(byval fileName as const zstring ptr)
-declare sub GuiLoadStyleDefault()
-declare function GuiIconText(byval iconId as long, byval text as const zstring ptr) as const zstring ptr
-declare sub GuiDrawIcon(byval iconId as long, byval posX as long, byval posY as long, byval pixelSize as long, byval color as RLColor)
-declare function GuiGetIcons() as ulong ptr
-declare function GuiGetIconData(byval iconId as long) as ulong ptr
-declare sub GuiSetIconData(byval iconId as long, byval data_ as ulong ptr)
-declare sub GuiSetIconScale(byval scale as ulong)
-declare sub GuiSetIconPixel(byval iconId as long, byval x as long, byval y as long)
-declare sub GuiClearIconPixel(byval iconId as long, byval x as long, byval y as long)
-declare function GuiCheckIconPixel(byval iconId as long, byval x as long, byval y as long) as boolean
+declare function GuiColorPicker(byval bounds as Rectangle, byval text as const zstring ptr, byval color as RLColor) as long
+declare function GuiColorPanel(byval bounds as Rectangle, byval text as const zstring ptr, byval color as RLColor) as long
+declare function GuiColorBarAlpha(byval bounds as Rectangle, byval text as const zstring ptr, byval alpha as single) as long
+declare function GuiColorBarHue(byval bounds as Rectangle, byval text as const zstring ptr, byval value as single) as long
+declare function GuiColorPickerHSV(byval bounds as Rectangle, byval text as const zstring ptr, byval colorHsv as Vector3 ptr) as long
+declare function GuiColorPanelHSV(byval bounds as Rectangle, byval text as const zstring ptr, byval colorHsv as Vector3 ptr) as long
 
 type GuiIconName as long
 enum
