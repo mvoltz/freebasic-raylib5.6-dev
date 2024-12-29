@@ -35,9 +35,9 @@ extern "C"
 
 #define RAYLIB_H
 const RAYLIB_VERSION_MAJOR = 5
-const RAYLIB_VERSION_MINOR = 0
+const RAYLIB_VERSION_MINOR = 5
 const RAYLIB_VERSION_PATCH = 0
-#define RAYLIB_VERSION "5.0"
+#define RAYLIB_VERSION "5.5"
 
 #ifndef PI
 	const PI = 3.14159265358979323846
@@ -313,6 +313,8 @@ type Mesh
 	animNormals as single ptr
 	boneIds as ubyte ptr
 	boneWeights as single ptr
+	boneMatrices as Matrix ptr
+	boneCount as long
 	vaoId as ulong
 	vboId as ulong ptr
 end type
@@ -362,6 +364,7 @@ type ModelAnimation
 	frameCount as long
 	bones as BoneInfo ptr
 	framePoses as Transform ptr ptr
+	name_ as zstring * 32
 end type
 
 type Ray
@@ -418,7 +421,6 @@ type VrDeviceInfo
 	vResolution as long
 	hScreenSize as single
 	vScreenSize as single
-	vScreenCenter as single
 	eyeToScreenDistance as single
 	lensSeparationDistance as single
 	interpupillaryDistance as single
@@ -446,7 +448,7 @@ end type
 type AutomationEvent
 	frame as ulong
 	type_ as ulong
-	params(0 to 4) as long
+	params(0 to 3) as long
 end type
 
 type AutomationEventList
@@ -708,6 +710,11 @@ enum
 	SHADER_LOC_MAP_IRRADIANCE
 	SHADER_LOC_MAP_PREFILTER
 	SHADER_LOC_MAP_BRDF
+	SHADER_LOC_VERTEX_BONEIDS 
+    SHADER_LOC_VERTEX_BONEWEIGHTS
+    SHADER_LOC_BONE_MATRICES 
+    SHADER_LOC_VERTEX_INSTANCE_TX 
+} ShaderLocationIndex;
 end enum
 
 const SHADER_LOC_MAP_DIFFUSE = SHADER_LOC_MAP_ALBEDO
@@ -723,6 +730,10 @@ enum
 	SHADER_UNIFORM_IVEC2
 	SHADER_UNIFORM_IVEC3
 	SHADER_UNIFORM_IVEC4
+	SHADER_UNIFORM_UINT
+    SHADER_UNIFORM_UIVEC2
+    SHADER_UNIFORM_UIVEC3
+    SHADER_UNIFORM_UIVEC4
 	SHADER_UNIFORM_SAMPLER2D
 end enum
 
@@ -787,7 +798,6 @@ enum
 	CUBEMAP_LAYOUT_LINE_HORIZONTAL
 	CUBEMAP_LAYOUT_CROSS_THREE_BY_FOUR
 	CUBEMAP_LAYOUT_CROSS_FOUR_BY_THREE
-	CUBEMAP_LAYOUT_PANORAMA
 end enum
 
 type FontType as long
@@ -806,7 +816,7 @@ enum
 	BLEND_SUBTRACT_COLORS
 	BLEND_ALPHA_PREMULTIPLY
 	BLEND_CUSTOM
-  BLEND_CUSTOM_SEPARATE
+    BLEND_CUSTOM_SEPARATE
 end enum
 
 type Gesture as long
@@ -857,8 +867,8 @@ type LoadFileTextCallback as function(byval fileName as const zstring ptr) as zs
 type SaveFileTextCallback as function(byval fileName as const zstring ptr, byval text as zstring ptr) as boolean
 
 declare sub InitWindow(byval width_ as long, byval height_ as long, byval title as const zstring ptr)
-declare function WindowShouldClose() as boolean
 declare sub CloseWindow()
+declare function WindowShouldClose() as boolean
 declare function IsWindowReady() as boolean
 declare function IsWindowFullscreen() as boolean
 declare function IsWindowHidden() as boolean
@@ -870,7 +880,7 @@ declare function IsWindowState(byval flag as ulong) as boolean
 declare sub SetWindowState(byval flags as ulong)
 declare sub ClearWindowState(byval flags as ulong)
 declare sub ToggleFullscreen()
-declare sub ToggleBorderlessWindow()
+declare sub ToggleBorderlessWindowed()
 declare sub MaximizeWindow()
 declare sub MinimizeWindow()
 declare sub RestoreWindow()
@@ -902,17 +912,21 @@ declare function GetWindowScaleDPI() as Vector2
 declare function GetMonitorName(byval monitor as long) as const zstring ptr
 declare sub SetClipboardText(byval text as const zstring ptr)
 declare function GetClipboardText() as const zstring ptr
+declare function GetClipboardImage() as Image
 declare sub EnableEventWaiting()
 declare sub DisableEventWaiting()
-declare sub SwapScreenBuffer()
-declare sub PollInputEvents()
-declare sub WaitTime(byval seconds as double)
+
+'' declare sub SwapScreenBuffer()
+'' declare sub PollInputEvents()
+'' declare sub WaitTime(byval seconds as double)
+
 declare sub ShowCursor()
 declare sub HideCursor()
 declare function IsCursorHidden() as boolean
 declare sub EnableCursor()
 declare sub DisableCursor()
 declare function IsCursorOnScreen() as boolean
+
 declare sub ClearBackground(byval color as RLColor)
 declare sub BeginDrawing()
 declare sub EndDrawing()
@@ -930,8 +944,10 @@ declare sub BeginScissorMode(byval x as long, byval y as long, byval width_ as l
 declare sub EndScissorMode()
 declare sub BeginVrStereoMode(byval config as VrStereoConfig)
 declare sub EndVrStereoMode()
+
 declare function LoadVrStereoConfig(byval device as VrDeviceInfo) as VrStereoConfig
 declare sub UnloadVrStereoConfig(byval config as VrStereoConfig)
+
 declare function LoadShader(byval vsFileName as const zstring ptr, byval fsFileName as const zstring ptr) as Shader
 declare function LoadShaderFromMemory(byval vsCode as const zstring ptr, byval fsCode as const zstring ptr) as Shader
 declare function IsShaderReady(byval shader as Shader) as byte
@@ -942,32 +958,51 @@ declare sub SetShaderValueV(byval shader as Shader, byval locIndex as long, byva
 declare sub SetShaderValueMatrix(byval shader as Shader, byval locIndex as long, byval mat as Matrix)
 declare sub SetShaderValueTexture(byval shader as Shader, byval locIndex as long, byval texture as Texture2D)
 declare sub UnloadShader(byval shader as Shader)
+
+''TODO
 declare function GetMouseRay(byval mousePosition as Vector2, byval camera as Camera) as Ray
-declare function GetCameraMatrix(byval camera as Camera) as Matrix
-declare function GetCameraMatrix2D(byval camera as Camera2D) as Matrix
+
+declare function GetScreenToWorldRay(byval position as Vector2, byval camera as Camera) as Ray
+declare function GetScreenToWorldRayEx(byval position as Vector2, byval camera as Camera, byval width_ as long, byval height_ as long) as Ray
 declare function GetWorldToScreen(byval position as Vector3, byval camera as Camera) as Vector2
-declare function GetScreenToWorld2D(byval position as Vector2, byval camera as Camera2D) as Vector2
 declare function GetWorldToScreenEx(byval position as Vector3, byval camera as Camera, byval width_ as long, byval height_ as long) as Vector2
 declare function GetWorldToScreen2D(byval position as Vector2, byval camera as Camera2D) as Vector2
+declare function GetScreenToWorld2D(byval position as Vector2, byval camera as Camera2D) as Vector2
+declare function GetCameraMatrix(byval camera as Camera) as Matrix
+declare function GetCameraMatrix2D(byval camera as Camera2D) as Matrix
+
 declare sub SetTargetFPS(byval fps as long)
-declare function GetFPS() as long
 declare function GetFrameTime() as single
 declare function GetTime() as double
-declare function GetRandomValue(byval min as long, byval max as long) as long
+declare function GetFPS() as long
+
+declare function SwapScreenBuffer()
+declare function PollInputEvents()
+declare function WaitTime(byval seconds as double)
+
 declare sub SetRandomSeed(byval seed as ulong)
+declare function GetRandomValue(byval min as long, byval max as long) as long
+
+''TODO
+''declare function LoadRandomSequence
+''declare function UnloadRandomSequence
+
 declare sub TakeScreenshot(byval fileName as const zstring ptr)
 declare sub SetConfigFlags(byval flags as ulong)
+declare sub OpenURL(byval url as const zstring ptr)
+
 declare sub TraceLog(byval logLevel as long, byval text as const zstring ptr, ...)
 declare sub SetTraceLogLevel(byval logLevel as long)
 declare function MemAlloc(byval size as long) as any ptr
 declare function MemRealloc(byval ptr as any ptr, byval size as long) as any ptr
 declare sub MemFree(byval ptr as any ptr)
-declare sub OpenURL(byval url as const zstring ptr)
+
 declare sub SetTraceLogCallback(byval callback as TraceLogCallback)
 declare sub SetLoadFileDataCallback(byval callback as LoadFileDataCallback)
 declare sub SetSaveFileDataCallback(byval callback as SaveFileDataCallback)
 declare sub SetLoadFileTextCallback(byval callback as LoadFileTextCallback)
 declare sub SetSaveFileTextCallback(byval callback as SaveFileTextCallback)
+
 declare function LoadFileData(byval fileName as const zstring ptr, byval dataSize as long ptr) as ubyte ptr
 declare sub UnloadFileData(byval data_ as ubyte ptr)
 declare function SaveFileData(byval fileName as const zstring ptr, byval data_ as any ptr, byval dataSize as long) as boolean
@@ -975,6 +1010,7 @@ declare function ExportDataAsCode(byval data_ as const zstring ptr, byval dataSi
 declare function LoadFileText(byval fileName as const zstring ptr) as zstring ptr
 declare sub UnloadFileText(byval text as zstring ptr)
 declare function SaveFileText(byval fileName as const zstring ptr, byval text as zstring ptr) as boolean
+
 declare function FileExists(byval fileName as const zstring ptr) as boolean
 declare function DirectoryExists(byval dirPath as const zstring ptr) as boolean
 declare function IsFileExtension(byval fileName as const zstring ptr, byval ext as const zstring ptr) as boolean
@@ -986,6 +1022,7 @@ declare function GetDirectoryPath(byval filePath as const zstring ptr) as const 
 declare function GetPrevDirectoryPath(byval dirPath as const zstring ptr) as const zstring ptr
 declare function GetWorkingDirectory() as const zstring ptr
 declare function GetApplicationDirectory() as const zstring ptr
+declare function MakeDirectory(byval dirPath as const zstring ptr) as ulong
 declare function ChangeDirectory(byval dir_ as const zstring ptr) as boolean
 declare function IsPathFile(byval path as const zstring ptr) as boolean
 declare function LoadDirectoryFiles(byval dirPath as const zstring ptr) as FilePathList
@@ -995,6 +1032,8 @@ declare function IsFileDropped() as boolean
 declare function LoadDroppedFiles() as FilePathList
 declare sub UnloadDroppedFiles(byval files as FilePathList)
 declare function GetFileModTime(byval fileName as const zstring ptr) as clong
+''STOPPED HERE
+
 declare function CompressData(byval data_ as const ubyte ptr, byval dataSize as long, byval compDataSize as long ptr) as ubyte ptr
 declare function DecompressData(byval compData as const ubyte ptr, byval compDataSize as long, byval dataSize as long ptr) as ubyte ptr
 declare function EncodeDataBase64(byval data_ as const ubyte ptr, byval dataSize as long, byval outputSize as long ptr) as zstring ptr
