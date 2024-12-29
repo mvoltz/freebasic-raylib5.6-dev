@@ -4,9 +4,9 @@
   
 Lib | Linux | Windows | Mac | BSD |
 --- | ----- | ------- | --- | --- |
-raylib.bi | tested | tested |  not tested |  not tested
-raymath.bi | tested | tested |  not tested |  not tested
-raygui.bi | tested | not tested | not tested | not tested
+raylib.bi | untested | untested |  untested |  untested
+raymath.bi | untested | untested |  untested |  untested
+raygui.bi | untested | untested | untested | untested
 
 ## example
 ```basic
