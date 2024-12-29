@@ -1150,80 +1150,68 @@ declare sub DrawPolyLinesEx(byval center as Vector2, byval sides as long, byval 
 '' Splines drawing functions
 '' -------------------------
 
-'' Draw spline: Linear, minimum 2 points
+'' RLAPI void DrawSplineLinear(const Vector2 *points, int pointCount, float thick, Color color);            // Draw spline: Linear, minimum 2 points
 declare sub DrawSplineLinear(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
 
-'' Draw spline: B-Spline, minimum 4 points
+'' RLAPI void DrawSplineBasis(const Vector2 *points, int pointCount, float thick, Color color);             // Draw spline: B-Spline, minimum 4 points
 declare sub DrawSplineBasis(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
 
-'' Draw spline: Catmull-Rom, minimum 4 points
+'' RLAPI void DrawSplineCatmullRom(const Vector2 *points, int pointCount, float thick, Color color);        // Draw spline: Catmull-Rom, minimum 4 points
 declare sub DrawSplineCatmullRom(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
 
-'' Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
+'' RLAPI void DrawSplineBezierQuadratic(const Vector2 *points, int pointCount, float thick, Color color);   // Draw spline: Quadratic Bezier, minimum 3 points (1 control point): [p1, c2, p3, c4...]
 declare sub DrawSplineBezierQuadratic(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
 
-'' Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
+'' RLAPI void DrawSplineBezierCubic(const Vector2 *points, int pointCount, float thick, Color color);       // Draw spline: Cubic Bezier, minimum 4 points (2 control points): [p1, c2, c3, p4, c5, c6...]
 declare sub DrawSplineBezierCubic(byval points as Vector2 ptr, byval pointCount as long, byval thick as single, byval color as RLColor)
 
-'' Draw spline segment: Linear, 2 points
+'' RLAPI void DrawSplineSegmentLinear(Vector2 p1, Vector2 p2, float thick, Color color);                    // Draw spline segment: Linear, 2 points
 declare sub DrawSplineSegmentLinear(byval p1 as Vector2, byval p2 as Vector2, byval thick as single, byval color as RLColor)
 
-'' Draw spline segment: B-Spline, 4 points
-declare sub DrawSplineSegmentBasis(byval p1 as Vector2, byval p2 as Vector2, byval p3 as Vector2, byval p4 as Vector2, byval thick as single, byval color as RLColor)
+'' RLAPI void DrawSplineSegmentBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color); // Draw spline segment: B-Spline, 4 points
 
-'' Draw spline segment: Catmull-Rom, 4 points
-declare sub DrawSplineSegmentCatmullRom(byval p1 as Vector2, byval p2 as Vector2, byval p3 as Vector2, byval p4 as Vector2, byval thick as single, byval color as RLColor)
+'' RLAPI void DrawSplineSegmentCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float thick, Color color); // Draw spline segment: Catmull-Rom, 4 points
 
-'' Draw spline segment: Quadratic Bezier, 2 points, 1 control point
-declare sub DrawSplineSegmentBezierQuadratic(byval p1 as Vector2, byval c2 as Vector2, byval p3 as Vector2, byval thick as single, byval color as RLColor)
+'' RLAPI void DrawSplineSegmentBezierQuadratic(Vector2 p1, Vector2 c2, Vector2 p3, float thick, Color color); // Draw spline segment: Quadratic Bezier, 2 points, 1 control point
 
-'' Draw spline segment: Cubic Bezier, 2 points, 2 control points
-declare sub DrawSplineSegmentBezierCubic(byval p1 as Vector2, byval c2 as Vector2, byval c3 as Vector2, byval p4 as Vector2, byval thick as single, byval color as RLColor)
-
-
+'' RLAPI void DrawSplineSegmentBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float thick, Color color); // Draw spline segment: Cubic Bezier, 2 points, 2 control points
+ 
 ''  Spline segment point evaluation functions, for a given t [0.0f .. 1.0f]
 ''  -----------------------------------------------------------------------
 
-'' Get (evaluate) spline point: Linear
-declare function GetSplinePointLinear(byval startPos as Vector2, byval endPos as Vector2, byval t as single) as Vector2
+'' RLAPI Vector2 GetSplinePointLinear(Vector2 startPos, Vector2 endPos, float t);                           // Get (evaluate) spline point: Linear
 
-'' Get (evaluate) spline point: B-Spline
-declare function GetSplinePointBasis(byval p1 as Vector2, byval p2 as Vector2, byval p3 as Vector2, byval p4 as Vector2, byval t as single) as Vector2
+'' RLAPI Vector2 GetSplinePointBasis(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t);              // Get (evaluate) spline point: B-Spline
 
-'' Get (evaluate) spline point: Catmull-Rom
-declare function GetSplinePointCatmullRom(byval p1 as Vector2, byval p2 as Vector2, byval p3 as Vector2, byval p4 as Vector2, byval t as single) as Vector2
+'' RLAPI Vector2 GetSplinePointCatmullRom(Vector2 p1, Vector2 p2, Vector2 p3, Vector2 p4, float t);         // Get (evaluate) spline point: Catmull-Rom
 
-'' Get (evaluate) spline point: Quadratic Bezier
-declare function GetSplinePointBezierQuad(byval p1 as Vector2, byval c2 as Vector2, byval p3 as Vector2, byval t as single) as Vector2
+'' RLAPI Vector2 GetSplinePointBezierQuad(Vector2 p1, Vector2 c2, Vector2 p3, float t);                     // Get (evaluate) spline point: Quadratic Bezier
 
-'' Get (evaluate) spline point: Cubic Bezier
-declare function GetSplinePointBezierCubic(byval p1 as Vector2, byval c2 as Vector2, byval p4 as Vector2, byval t as single) as Vector2
+'' RLAPI Vector2 GetSplinePointBezierCubic(Vector2 p1, Vector2 c2, Vector2 c3, Vector2 p4, float t);        // Get (evaluate) spline point: Cubic Bezier
+
 
 declare function CheckCollisionRecs(byval rec1 as Rectangle, byval rec2 as Rectangle) as boolean
 declare function CheckCollisionCircles(byval center1 as Vector2, byval radius1 as single, byval center2 as Vector2, byval radius2 as single) as boolean
 declare function CheckCollisionCircleRec(byval center as Vector2, byval radius as single, byval rec as Rectangle) as boolean
-declare function CheckCollisionCircleLine(byval center as Vector2, byval radius as single, byval p1 as Vector2, byval p2 as Vector2) as boolean
 declare function CheckCollisionPointRec(byval point_ as Vector2, byval rec as Rectangle) as boolean
 declare function CheckCollisionPointCircle(byval point_ as Vector2, byval center as Vector2, byval radius as single) as boolean
 declare function CheckCollisionPointTriangle(byval point_ as Vector2, byval p1 as Vector2, byval p2 as Vector2, byval p3 as Vector2) as boolean
-declare function CheckCollisionPointLine(byval point_ as Vector2, byval p1 as Vector2, byval p2 as Vector2, byval threshold as long) as boolean
 declare function CheckCollisionPointPoly(byval point as Vector2, byval points as Vector2 ptr, byval pointCount as long) as byte
 declare function CheckCollisionLines(byval startPos1 as Vector2, byval endPos1 as Vector2, byval startPos2 as Vector2, byval endPos2 as Vector2, byval collisionPoint as Vector2 ptr) as boolean
+declare function CheckCollisionPointLine(byval point_ as Vector2, byval p1 as Vector2, byval p2 as Vector2, byval threshold as long) as boolean
 declare function GetCollisionRec(byval rec1 as Rectangle, byval rec2 as Rectangle) as Rectangle
-
 declare function LoadImage(byval fileName as const zstring ptr) as Image
 declare function LoadImageRaw(byval fileName as const zstring ptr, byval width_ as long, byval height_ as long, byval format_ as long, byval headerSize as long) as Image
-''declare function LoadImageSVG(byval fileNameOrString as const zstring ptr, byval width_ as long, byval height_ as long) as Image
+declare function LoadImageSVG(byval fileNameOrString as const zstring ptr, byval width_ as long, byval height_ as long) as Image
 declare function LoadImageAnim(byval fileName as const zstring ptr, byval frames as long ptr) as Image
 declare function LoadImageFromMemory(byval fileType as const zstring ptr, byval fileData as const ubyte ptr, byval dataSize as long) as Image
 declare function LoadImageFromTexture(byval texture as Texture2D) as Image
 declare function LoadImageFromScreen() as Image
-declare function IsImageValid(byval image_ as Image) as byte
+declare function IsImageReady(byval image_ as Image) as byte
 declare sub UnloadImage(byval image_ as Image)
 declare function ExportImage(byval image_ as Image, byval fileName as const zstring ptr) as boolean
 declare function ExportImageToMemory(byval image_ as Image, byval fileType as const zstring ptr, byval fileSie as long) as zstring ptr
 declare function ExportImageAsCode(byval image_ as Image, byval fileName as const zstring ptr) as boolean
-
 declare function GenImageColor(byval width_ as long, byval height_ as long, byval color as RLColor) as Image
 declare function GenImageGradientLinear(byval width_ as long, byval height_ as long, byval direction as long, byval start_ as RLColor, byval end_ as RLColor) as Image
 declare function GenImageGradientRadial(byval width_ as long, byval height_ as long, byval density as single, byval inner as RLColor, byval outer as RLColor) as Image
@@ -1233,7 +1221,6 @@ declare function GenImageWhiteNoise(byval width_ as long, byval height_ as long,
 declare function GenImagePerlinNoise(byval width_ as long, byval height_ as long, byval offsetX as long, byval offsetY as long, byval scale as single) as Image
 declare function GenImageCellular(byval width_ as long, byval height_ as long, byval tileSize as long) as Image
 declare function GenImageText(byval width_ as long, byval height_ as long, byval text_ as const zstring ptr) as Image
-
 declare function ImageCopy(byval image_ as Image) as Image
 declare function ImageFromImage(byval image_ as Image, byval rec as Rectangle) as Image
 declare function ImageText(byval text as const zstring ptr, byval fontSize as long, byval color as RLColor) as Image
@@ -1268,7 +1255,6 @@ declare sub UnloadImageColors(byval colors as RLColor ptr)
 declare sub UnloadImagePalette(byval colors as RLColor ptr)
 declare function GetImageAlphaBorder(byval image_ as Image, byval threshold as single) as Rectangle
 declare function GetImageColor(byval image_ as Image, byval x as long, byval y as long) as RLColor
-
 declare sub ImageClearBackground(byval dst as Image ptr, byval color as RLColor)
 declare sub ImageDrawPixel(byval dst as Image ptr, byval posX as long, byval posY as long, byval color as RLColor)
 declare sub ImageDrawPixelV(byval dst as Image ptr, byval position as Vector2, byval color as RLColor)
@@ -1282,52 +1268,28 @@ declare sub ImageDrawRectangle(byval dst as Image ptr, byval posX as long, byval
 declare sub ImageDrawRectangleV(byval dst as Image ptr, byval position as Vector2, byval size as Vector2, byval color as RLColor)
 declare sub ImageDrawRectangleRec(byval dst as Image ptr, byval rec as Rectangle, byval color as RLColor)
 declare sub ImageDrawRectangleLines(byval dst as Image ptr, byval rec as Rectangle, byval thick as long, byval color as RLColor)
-'' Draw triangle within an image
-declare sub ImageDrawTriangle(byval dst as Image ptr, byval v1 as Vector2, byval v2 as Vector2, byval v3 as Vector2, byval color as RLColor)
-
-'' Draw triangle with interpolated colors within an image
-declare sub ImageDrawTriangleEx(byval dst as Image ptr, byval v1 as Vector2, byval v2 as Vector2, byval v3 as Vector2, byval c1 as RLColor, byval c2 as RLColor, byval c3 as RLColor)
-
-'' Draw triangle outline within an image
-declare sub ImageDrawTriangleLinesi(byval dst as Image ptr, byval v1 as Vector2, byval v2 as Vector2, byval v3 as Vector2, byval color as RLColor)
-
-'' Draw a triangle fan defined by points within an image (first vertex is the center)
-declare sub ImageDrawTriangleFan(byval dst as Image ptr, byval points as Vector2 ptr, byval pointCount as long, byval color as RLColor)
-
-'' Draw a triangle strip defined by points within an image
-declare sub ImageDrawTriangleStrip(byval dst as Image ptr, byval points as Vector2 ptr, byval pointCount as long, byval color as RLColor)
 declare sub ImageDraw(byval dst as Image ptr, byval src as Image, byval srcRec as Rectangle, byval dstRec as Rectangle, byval tint as RLColor)
 declare sub ImageDrawText(byval dst as Image ptr, byval text as const zstring ptr, byval posX as long, byval posY as long, byval fontSize as long, byval color as RLColor)
 declare sub ImageDrawTextEx(byval dst as Image ptr, byval font as Font, byval text as const zstring ptr, byval position as Vector2, byval fontSize as single, byval spacing as single, byval tint as RLColor)
-
-'' Texture loading 
-'' Requires GPU access
 declare function LoadTexture(byval fileName as const zstring ptr) as Texture2D
 declare function LoadTextureFromImage(byval image_ as Image) as Texture2D
 declare function LoadTextureCubemap(byval image_ as Image, byval layout as long) as TextureCubemap
 declare function LoadRenderTexture(byval width_ as long, byval height_ as long) as RenderTexture2D
-declare function IsTexturevalid(byval texture as Texture2D) as boolean
+declare function IsTextureReady(byval texture as Texture2D) as byte
 declare sub UnloadTexture(byval texture as Texture2D)
-declare function IsRenderTextureValid(byval target as RenderTexture2D) as boolean
+declare function IsRenderTextureReady(byval target as RenderTexture2D) as byte
 declare sub UnloadRenderTexture(byval target as RenderTexture2D)
 declare sub UpdateTexture(byval texture as Texture2D, byval pixels as const any ptr)
 declare sub UpdateTextureRec(byval texture as Texture2D, byval rec as Rectangle, byval pixels as const any ptr)
-
-'' Texture configuration
 declare sub GenTextureMipmaps(byval texture as Texture2D ptr)
 declare sub SetTextureFilter(byval texture as Texture2D, byval filter as long)
 declare sub SetTextureWrap(byval texture as Texture2D, byval wrap as long)
-
-'' Texture drawing
 declare sub DrawTexture(byval texture as Texture2D, byval posX as long, byval posY as long, byval tint as RLColor)
 declare sub DrawTextureV(byval texture as Texture2D, byval position as Vector2, byval tint as RLColor)
 declare sub DrawTextureEx(byval texture as Texture2D, byval position as Vector2, byval rotation as single, byval scale as single, byval tint as RLColor)
 declare sub DrawTextureRec(byval texture as Texture2D, byval source as Rectangle, byval position as Vector2, byval tint as RLColor)
 declare sub DrawTexturePro(byval texture as Texture2D, byval source as Rectangle, byval dest as Rectangle, byval origin as Vector2, byval rotation as single, byval tint as RLColor)
 declare sub DrawTextureNPatch(byval texture as Texture2D, byval nPatchInfo as NPatchInfo, byval dest as Rectangle, byval origin as Vector2, byval rotation as single, byval tint as RLColor)
-
-'' Color/pixel related
-declare function ColorIsEqual(byval col1 as RLColor, byval col2 as RLColor) as boolean
 declare function Fade(byval color as RLColor, byval alpha_ as single) as RLColor
 declare function ColorToInt(byval color_ as RLColor) as long
 declare function ColorNormalize(byval color_ as RLColor) as Vector4
@@ -1339,28 +1301,21 @@ declare function ColorBrightness(byval color_ as RLColor, byval factor as single
 declare function ColorContrast(byval color_ as RLColor, byval contrast as single) as RLColor
 declare function ColorAlpha(byval color_ as RLColor, byval alpha_ as single) as RLColor
 declare function ColorAlphaBlend(byval dst as RLColor, byval src as RLColor, byval tint as RLColor) as RLColor
-declare function ColorLerp(byval color1 as RLColor, byval color2 as RLColor, byval factor as single) as RLColor
 declare function GetColor(byval hexValue as ulong) as RLColor
 declare function GetPixelColor(byval srcPtr as any ptr, byval format_ as long) as RLColor
 declare sub SetPixelColor(byval dstPtr as any ptr, byval color as RLColor, byval format_ as long)
 declare function GetPixelDataSize(byval width_ as long, byval height_ as long, byval format_ as long) as long
-
-'' Module: text
-'' Font loading/unloading
-
 declare function GetFontDefault() as Font
 declare function LoadFont(byval fileName as const zstring ptr) as Font
 declare function LoadFontEx(byval fileName as const zstring ptr, byval fontSize as long, byval codepoints as long ptr, byval codepointCount as long) as Font
 declare function LoadFontFromImage(byval image_ as Image, byval key as RLColor, byval firstChar as long) as Font
 declare function LoadFontFromMemory(byval fileType as const zstring ptr, byval fileData as const ubyte ptr, byval dataSize as long, byval fontSize as long, byval codepoints as long ptr, byval codepointCount as long) as Font
-declare function IsFontValid(byval font as Font) as boolean
+declare function IsFontReady(byval font as Font) as byte
 declare function LoadFontData(byval fileData as const ubyte ptr, byval dataSize as long, byval fontSize as long, byval codepoints as long ptr, byval codepointCount as long, byval type as long) as GlyphInfo ptr
 declare function GenImageFontAtlas(byval glyphs as const GlyphInfo ptr, byval glyphRecs as Rectangle ptr ptr, byval glyphCount as long, byval fontSize as long, byval padding as long, byval packMethod as long) as Image
 declare sub UnloadFontData(byval glyphs as GlyphInfo ptr, byval glyphCount as long)
 declare sub UnloadFont(byval font as Font)
 declare function ExportFontAsCode(byval font as Font, byval fileName as const zstring ptr) as boolean
-
-'' Text drawing
 declare sub DrawFPS(byval posX as long, byval posY as long)
 declare sub DrawText(byval text as const zstring ptr, byval posX as long, byval posY as long, byval fontSize as long, byval color as RLColor)
 declare sub DrawTextEx(byval font as Font, byval text as const zstring ptr, byval position as Vector2, byval fontSize as single, byval spacing as single, byval tint as RLColor)
@@ -1368,28 +1323,22 @@ declare sub DrawTextPro(byval font as Font, byval text as const zstring ptr, byv
 declare sub DrawTextCodepoint(byval font as Font, byval codepoint as long, byval position as Vector2, byval fontSize as single, byval tint as RLColor)
 declare sub DrawTextCodepoints(byval font as Font, byval codepoints as const long ptr, byval codepointCount as long, byval position as Vector2, byval fontSize as single, byval spacing as single, byval tint as RLColor)
 
-'' Text font info 
-declare sub SetTextLineSpacing(byval spacing as long)
+declare sub SetTextLineSpacing(byval spaceing as long)
+
 declare function MeasureText(byval text as const zstring ptr, byval fontSize as long) as long
 declare function MeasureTextEx(byval font as Font, byval text as const zstring ptr, byval fontSize as single, byval spacing as single) as Vector2
 declare function GetGlyphIndex(byval font as Font, byval codepoint as long) as long
 declare function GetGlyphInfo(byval font as Font, byval codepoint as long) as GlyphInfo
 declare function GetGlyphAtlasRec(byval font as Font, byval codepoint as long) as Rectangle
-
-'' Text codepoints management
 declare function LoadUTF8(byval codepoints as const long ptr, byval length_ as long) as zstring ptr
 declare sub UnloadUTF8(byval text as zstring ptr)
 declare function LoadCodepoints(byval text_ as const zstring ptr, byval count as long ptr) as long ptr
 declare sub UnloadCodepoints(byval codepoints as long ptr)
-declare function GetCodepointCount(byval text as const zstring ptr) as long
 declare function GetCodepoint(byval text as const zstring ptr, byval codepointSize as long ptr) as long
 declare function GetCodepointNext(byval text as const zstring ptr, byval codepointSize as long ptr) as long
 declare function GetCodepointPrevious(byval text as const zstring ptr, byval codepointSize as long ptr) as long
 declare function CodepointToUTF8(byval codepoint as long, byval utf8Size as long ptr) as const zstring ptr
-
-'' Text strings management (no UTF-8 strings, only byte chars)
-'' // NOTE: Some strings allocate memory internally for returned strings, just be careful!
-'' declare function TextCodepointsToUTF8(byval codepoints as const long ptr, byval length as long) as zstring ptr
+declare function TextCodepointsToUTF8(byval codepoints as const long ptr, byval length as long) as zstring ptr
 declare function TextCopy(byval dst as zstring ptr, byval src as const zstring ptr) as long
 declare function TextIsEqual(byval text1 as const zstring ptr, byval text2 as const zstring ptr) as boolean
 declare function TextLength(byval text as const zstring ptr) as ulong
@@ -1404,14 +1353,7 @@ declare function TextFindIndex(byval text as const zstring ptr, byval find as co
 declare function TextToUpper(byval text as const zstring ptr) as const zstring ptr
 declare function TextToLower(byval text as const zstring ptr) as const zstring ptr
 declare function TextToPascal(byval text as const zstring ptr) as const zstring ptr
-declare function TextToSnake(byval text as const zstring ptr) as const zstring ptr
-declare function TextToCamel(byval text as const zstring ptr) as const zstring ptr
-
 declare function TextToInteger(byval text as const zstring ptr) as long
-declare function TextToFloat(byval text as single ptr) as single
-
-'' Module: models
-'' Basic 3d Shapes Drawing
 declare sub DrawLine3D(byval startPos as Vector3, byval endPos as Vector3, byval color as RLColor)
 declare sub DrawPoint3D(byval position as Vector3, byval color as RLColor)
 declare sub DrawCircle3D(byval center as Vector3, byval radius as single, byval rotationAxis as Vector3, byval rotationAngle as single, byval color as RLColor)
@@ -1433,38 +1375,27 @@ declare sub DrawCapsuleWires(byval startPos as Vector3, byval endPos as Vector3,
 declare sub DrawPlane(byval centerPos as Vector3, byval size as Vector2, byval color as RLColor)
 declare sub DrawRay(byval ray as Ray, byval color as RLColor)
 declare sub DrawGrid(byval slices as long, byval spacing as single)
-
-'' Model 3d Loading and Drawing
 declare function LoadModel(byval fileName as const zstring ptr) as Model
 declare function LoadModelFromMesh(byval mesh as Mesh) as Model
-declare function IsModelValid(byval model as Model) as boolean
+declare function IsModelReady(byval model as Model) as byte
 declare sub UnloadModel(byval model as Model)
 declare function GetModelBoundingBox(byval model as Model) as BoundingBox
-
-'' Model Drawing
 declare sub DrawModel(byval model as Model, byval position as Vector3, byval scale as single, byval tint as RLColor)
 declare sub DrawModelEx(byval model as Model, byval position as Vector3, byval rotationAxis as Vector3, byval rotationAngle as single, byval scale as Vector3, byval tint as RLColor)
 declare sub DrawModelWires(byval model as Model, byval position as Vector3, byval scale as single, byval tint as RLColor)
 declare sub DrawModelWiresEx(byval model as Model, byval position as Vector3, byval rotationAxis as Vector3, byval rotationAngle as single, byval scale as Vector3, byval tint as RLColor)
-declare sub DrawModelPoints(byval model as Model, byval position as Vector3, byval scale as single, byval tint as RLColor)
-declare sub DrawModelPointsEx(byval model as Model, byval position as Vector3, byval rotationAxis as Vector3, byval rotationAngle as single, byval scale as Vector3, byval tine as RLColor)
 declare sub DrawBoundingBox(byval box as BoundingBox, byval color as RLColor)
 declare sub DrawBillboard(byval camera as Camera, byval texture as Texture2D, byval position as Vector3, byval size as single, byval tint as RLColor)
 declare sub DrawBillboardRec(byval camera as Camera, byval texture as Texture2D, byval source as Rectangle, byval position as Vector3, byval size as Vector2, byval tint as RLColor)
 declare sub DrawBillboardPro(byval camera as Camera, byval texture as Texture2D, byval source as Rectangle, byval position as Vector3, byval up as Vector3, byval size as Vector2, byval origin as Vector2, byval rotation as single, byval tint as RLColor)
-
-'' Mesh Management
 declare sub UploadMesh(byval mesh as Mesh ptr, byval dynamic as boolean)
 declare sub UpdateMeshBuffer(byval mesh as Mesh, byval index as long, byval data_ as const any ptr, byval dataSize as long, byval offset as long)
 declare sub UnloadMesh(byval mesh as Mesh)
 declare sub DrawMesh(byval mesh as Mesh, byval material as Material, byval transform as Matrix)
 declare sub DrawMeshInstanced(byval mesh as Mesh, byval material as Material, byval transforms as const Matrix ptr, byval instances as long)
+declare function ExportMesh(byval mesh as Mesh, byval fileName as const zstring ptr) as boolean
 declare function GetMeshBoundingBox(byval mesh as Mesh) as BoundingBox
 declare sub GenMeshTangents(byval mesh as Mesh ptr)
-declare function ExportMesh(byval mesh as Mesh, byval fileName as const zstring ptr) as boolean
-declare function ExportMeshAsCode(byval mesh as Mesh, byval fileName as const zstring ptr) as boolean
-
-'' Mesh Generation
 declare function GenMeshPoly(byval sides as long, byval radius as single) as Mesh
 declare function GenMeshPlane(byval width_ as single, byval length as single, byval resX as long, byval resZ as long) as Mesh
 declare function GenMeshCube(byval width_ as single, byval height_ as single, byval length as single) as Mesh
@@ -1476,24 +1407,17 @@ declare function GenMeshTorus(byval radius as single, byval size as single, byva
 declare function GenMeshKnot(byval radius as single, byval size as single, byval radSeg as long, byval sides as long) as Mesh
 declare function GenMeshHeightmap(byval heightmap as Image, byval size as Vector3) as Mesh
 declare function GenMeshCubicmap(byval cubicmap as Image, byval cubeSize as Vector3) as Mesh
-
-'' Material loading/unloading
 declare function LoadMaterials(byval fileName as const zstring ptr, byval materialCount as long ptr) as Material ptr
 declare function LoadMaterialDefault() as Material
-declare function IsMaterialValid(byval material as Material) as boolean
+declare function IsMaterialReady(byval material as Material) as byte
 declare sub UnloadMaterial(byval material as Material)
 declare sub SetMaterialTexture(byval material as Material ptr, byval mapType as long, byval texture as Texture2D)
 declare sub SetModelMeshMaterial(byval model as Model ptr, byval meshId as long, byval materialId as long)
-
-'' Model animations loading/unloading
 declare function LoadModelAnimations(byval fileName as const zstring ptr, byval animCount as long ptr) as ModelAnimation ptr
 declare sub UpdateModelAnimation(byval model as Model, byval anim as ModelAnimation, byval frame as long)
-declare sub UpdateModelAnimationBones(byval model as Model, byval anim as ModelAnimation, byval frame as long)
 declare sub UnloadModelAnimation(byval anim as ModelAnimation)
 declare sub UnloadModelAnimations(byval animations as ModelAnimation ptr, byval count as long)
 declare function IsModelAnimationValid(byval model as Model, byval anim as ModelAnimation) as boolean
-
-'' Collision detection
 declare function CheckCollisionSpheres(byval center1 as Vector3, byval radius1 as single, byval center2 as Vector3, byval radius2 as single) as boolean
 declare function CheckCollisionBoxes(byval box1 as BoundingBox, byval box2 as BoundingBox) as boolean
 declare function CheckCollisionBoxSphere(byval box as BoundingBox, byval center as Vector3, byval radius as single) as boolean
@@ -1502,34 +1426,25 @@ declare function GetRayCollisionBox(byval ray as Ray, byval box as BoundingBox) 
 declare function GetRayCollisionMesh(byval ray as Ray, byval mesh as Mesh, byval transform as Matrix) as RayCollision
 declare function GetRayCollisionTriangle(byval ray as Ray, byval p1 as Vector3, byval p2 as Vector3, byval p3 as Vector3) as RayCollision
 declare function GetRayCollisionQuad(byval ray as Ray, byval p1 as Vector3, byval p2 as Vector3, byval p3 as Vector3, byval p4 as Vector3) as RayCollision
-
-'' Module: audio
-
 type AudioCallback as sub(byval bufferData as any ptr, byval frames as ulong)
-
-'' Audio device management
 declare sub InitAudioDevice()
 declare sub CloseAudioDevice()
 declare function IsAudioDeviceReady() as boolean
 declare sub SetMasterVolume(byval volume as single)
 declare function GetMasterVolume() as single
-
-'' Wave/Sound loading/unloading
 declare function LoadWave(byval fileName as const zstring ptr) as Wave
 declare function LoadWaveFromMemory(byval fileType as const zstring ptr, byval fileData as const ubyte ptr, byval dataSize as long) as Wave
-declare function IsWaveValid(byval wave as Wave) as boolean
+declare function IsWaveReady(byval wave as Wave) as byte
 declare function LoadSound(byval fileName as const zstring ptr) as Sound
 declare function LoadSoundFromWave(byval wave as Wave) as Sound
 declare function LoadSoundAlias(byval source as Sound) as Sound
-declare function IsSoundValid(byval sound as Sound) as boolean
+declare function IsSoundReady(byval sound as Sound) as byte
 declare sub UpdateSound(byval sound as Sound, byval data_ as const any ptr, byval sampleCount as long)
 declare sub UnloadWave(byval wave as Wave)
 declare sub UnloadSound(byval sound as Sound)
 declare sub UnloadSoundAlias(byval alias as Sound)
 declare function ExportWave(byval wave as Wave, byval fileName as const zstring ptr) as boolean
 declare function ExportWaveAsCode(byval wave as Wave, byval fileName as const zstring ptr) as boolean
-
-'' Wave/Sound management
 declare sub PlaySound(byval sound as Sound)
 declare sub StopSound(byval sound as Sound)
 declare sub PauseSound(byval sound as Sound)
@@ -1543,11 +1458,9 @@ declare sub WaveCrop(byval wave as Wave ptr, byval initSample as long, byval fin
 declare sub WaveFormat(byval wave as Wave ptr, byval sampleRate as long, byval sampleSize as long, byval channels as long)
 declare function LoadWaveSamples(byval wave as Wave) as single ptr
 declare sub UnloadWaveSamples(byval samples as single ptr)
-
-'' Music management
 declare function LoadMusicStream(byval fileName as const zstring ptr) as Music
 declare function LoadMusicStreamFromMemory(byval fileType as const zstring ptr, byval data_ as const ubyte ptr, byval dataSize as long) as Music
-declare function IsMusicValid(byval music as Music) as boolean
+declare function IsMusicReady(byval music as Music) as byte
 declare sub UnloadMusicStream(byval music as Music)
 declare sub PlayMusicStream(byval music as Music)
 declare function IsMusicStreamPlaying(byval music as Music) as boolean
@@ -1561,8 +1474,6 @@ declare sub SetMusicPitch(byval music as Music, byval pitch as single)
 declare sub SetMusicPan(byval music as Music, byval pan as single)
 declare function GetMusicTimeLength(byval music as Music) as single
 declare function GetMusicTimePlayed(byval music as Music) as single
-
-'' AudioStream management
 declare function LoadAudioStream(byval sampleRate as ulong, byval sampleSize as ulong, byval channels as ulong) as AudioStream
 declare function IsAudioStreamReady(byval stream as AudioStream) as byte
 declare sub UnloadAudioStream(byval stream as AudioStream)
@@ -1578,10 +1489,8 @@ declare sub SetAudioStreamPitch(byval stream as AudioStream, byval pitch as sing
 declare sub SetAudioStreamPan(byval stream as AudioStream, byval pan as single)
 declare sub SetAudioStreamBufferSizeDefault(byval size as long)
 declare sub SetAudioStreamCallback(byval stream as AudioStream, byval callback as AudioCallback)
-
 declare sub AttachAudioStreamProcessor(byval stream as AudioStream, byval processor as AudioCallback)
 declare sub DetachAudioStreamProcessor(byval stream as AudioStream, byval processor as AudioCallback)
-
 declare sub AttachAudioMixedProcessor(byval processor as AudioCallback)
 declare sub DetachAudioMixedProcessor(byval processor as AudioCallback)
 
