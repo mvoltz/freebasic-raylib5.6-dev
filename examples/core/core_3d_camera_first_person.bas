@@ -14,6 +14,7 @@ cam.up = vector3(0, 1, 0)
 cam.fovy = 60
 cam.projection = CAMERA_PERSPECTIVE
 
+dim as CameraMode cameraMode
 dim as short heights(MAX_COLUMNS)
 dim as vector3 positions(MAX_COLUMNS)
 dim as rlcolor col(MAX_COLUMNS)
@@ -24,13 +25,13 @@ for i as integer = 0 to MAX_COLUMNS
   col(i) = rlcolor(GetRandomValue(20, 255), GetRandomValue(10, 55), 30, 255)
 next i
 
-SetCameraMode(cam, CAMERA_FIRST_PERSON)
+cameraMode = CAMERA_FIRST_PERSON
 
 SetTargetFPS(60)
 
 while not WindowShouldClose()
 
-  UpdateCamera(@cam)
+  UpdateCamera(@cam, 3)
 
   BeginDrawing()
     
