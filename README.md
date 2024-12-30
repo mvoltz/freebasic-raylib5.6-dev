@@ -7,6 +7,8 @@ I only program for fun so if you're experienced in FreeBASIC or Raylib I welcome
 
 Expect errors and you won't be disappointed.
 
+---
+
 [FreeBasic](https://freebasic.net/) bindings for [raylib](https://github.com/raysan5/raylib)  
 
 'raylib.bi' is coming along nicely.
