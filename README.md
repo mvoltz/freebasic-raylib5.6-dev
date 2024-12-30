@@ -1,8 +1,10 @@
-# raylib-freebasic -> v5.5/5.6 (WIP) - DO NOT USE YET
+# raylib-freebasic -> v5.5/5.6 (WIP)
 
 ***DISCLAIMER***
 I am a "hobby" programmer. 
+
 I only program for fun so if you're experienced in FreeBASIC or Raylib I welcome code critiques.
+
 Expect errors and you won't be disappointed.
 
 [FreeBasic](https://freebasic.net/) bindings for [raylib](https://github.com/raysan5/raylib)  
