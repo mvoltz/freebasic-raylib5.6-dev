@@ -1,14 +1,22 @@
 # raylib-freebasic -> v5.5/5.6 (WIP) - DO NOT USE YET
 
+***DISCLAIMER***
+I am a "hobby" programmer. 
+I only program for fun so if you're experienced in FreeBASIC or Raylib I welcome code critiques.
+Expect errors and you won't be disappointed.
+
 [FreeBasic](https://freebasic.net/) bindings for [raylib](https://github.com/raysan5/raylib)  
 
 'raylib.bi' is coming along nicely.
+
+The examples will progress as my FB skills improve.  There's just a few for now.
 
 'raygui.bi' is going to take some noodling - going from 3.x to 4.5.
 
 'raymath.bi' is not yet started.
 
-  
+I will eventually test from Windows, but I don't own a Mac.  Any help is appreciated there.
+
 Lib | Linux | Windows | Mac | BSD |
 --- | ----- | ------- | --- | --- |
 raylib.bi | untested | untested |  untested |  untested
