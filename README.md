@@ -23,7 +23,7 @@ I will eventually test from Windows, but I don't own a Mac.  Any help is appreci
 
 Lib | Linux | Windows | Mac | BSD |
 --- | ----- | ------- | --- | --- |
-raylib.bi | untested | untested |  untested |  untested
+raylib.bi | In Progress | untested |  untested |  untested
 raymath.bi | untested | untested |  untested |  untested
 raygui.bi | untested | untested | untested | untested
 
