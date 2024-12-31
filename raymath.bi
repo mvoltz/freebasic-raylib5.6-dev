@@ -14,83 +14,83 @@ const RAD2DEG = 180.0f / PI
 #define MatrixToFloat(mat) MatrixToFloatV(mat).v
 #define Vector3ToFloat(vec) Vector3ToFloatV(vec).v
 
-type Vector2
-	x as single
-	y as single
-	declare constructor()
-	declare constructor(x as single, y as single)
-end type
-
-constructor Vector2(x as single, y as single)
-	this.x = x
-	this.y = y
-end constructor
-	
-constructor Vector2()
-end constructor
-
-#define RL_VECTOR2_TYPE
-
-type Vector3
-	x as single
-	y as single
-	z as single
-	declare constructor()
-	declare constructor(x as single, y as single, z as single)
-end type
-	
-constructor Vector3()
-end constructor
-
-constructor Vector3(x as single, y as single, z as single)
-	this.x = x
-	this.y = y
-    this.z = z
-end constructor
-
-#define RL_VECTOR3_TYPE
-
-type Vector4
-	x as single
-	y as single
-	z as single
-	w as single
-	declare constructor()
-	declare constructor(x as single, y as single, z as single, w as single)
-end type
-	
-constructor Vector4()
-end constructor
-
-constructor Vector4(x as single, y as single, z as single, w as single)
-	this.x = x
-	this.y = y
-	this.z = z
-	this.w = w
-end constructor
+'' type Vector2
+'' 	x as single
+'' 	y as single
+'' 	declare constructor()
+'' 	declare constructor(x as single, y as single)
+'' end type
+'' 
+'' constructor Vector2(x as single, y as single)
+'' 	this.x = x
+'' 	this.y = y
+'' end constructor
+'' 	
+'' constructor Vector2()
+'' end constructor
+'' 
+'' #define RL_VECTOR2_TYPE
+'' 
+'' type Vector3
+'' 	x as single
+'' 	y as single
+'' 	z as single
+'' 	declare constructor()
+'' 	declare constructor(x as single, y as single, z as single)
+'' end type
+'' 	
+'' constructor Vector3()
+'' end constructor
+'' 
+'' constructor Vector3(x as single, y as single, z as single)
+'' 	this.x = x
+'' 	this.y = y
+''     this.z = z
+'' end constructor
+'' 
+'' #define RL_VECTOR3_TYPE
+'' 
+'' type Vector4
+'' 	x as single
+'' 	y as single
+'' 	z as single
+'' 	w as single
+'' 	declare constructor()
+'' 	declare constructor(x as single, y as single, z as single, w as single)
+'' end type
+'' 	
+'' constructor Vector4()
+'' end constructor
+'' 
+'' constructor Vector4(x as single, y as single, z as single, w as single)
+'' 	this.x = x
+'' 	this.y = y
+'' 	this.z = z
+'' 	this.w = w
+'' end constructor
 
 #define RL_VECTOR4_TYPE
 type Quaternion as Vector4
 #define RL_QUATERNION_TYPE
 
-type Matrix
-	m0 as single
-	m4 as single
-	m8 as single
-	m12 as single
-	m1 as single
-	m5 as single
-	m9 as single
-	m13 as single
-	m2 as single
-	m6 as single
-	m10 as single
-	m14 as single
-	m3 as single
-	m7 as single
-	m11 as single
-	m15 as single
-end type
+'' type Matrix
+'' 	m0 as single
+'' 	m4 as single
+'' 	m8 as single
+'' 	m12 as single
+'' 	m1 as single
+'' 	m5 as single
+'' 	m9 as single
+'' 	m13 as single
+'' 	m2 as single
+'' 	m6 as single
+'' 	m10 as single
+'' 	m14 as single
+'' 	m3 as single
+'' 	m7 as single
+'' 	m11 as single
+'' 	m15 as single
+'' end type
 
 #define RL_MATRIX_TYPE
 
