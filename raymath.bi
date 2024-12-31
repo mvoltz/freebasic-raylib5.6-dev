@@ -118,9 +118,11 @@ end type
 	declare function Vector2Length(byval v as Vector2) as single
 	declare function Vector2LengthSqr(byval v as Vector2) as single
 	declare function Vector2DotProduct(byval v1 as Vector2, byval v2 as Vector2) as single
+	declare function Vector2CrossProduct(byval v1 as Vector2, byval v2 as Vector2) as single
 	declare function Vector2Distance(byval v1 as Vector2, byval v2 as Vector2) as single
 	declare function Vector2DistanceSqr(byval v1 as Vector2, byval v2 as Vector2) as single
 	declare function Vector2Angle(byval v1 as Vector2, byval v2 as Vector2) as single
+	declare function Vector2LineAngle(byval v1 as Vector2, byval v2 as Vector2) as single
 	declare function Vector2Scale(byval v as Vector2, byval scale as single) as Vector2
 	declare function Vector2Multiply(byval v1 as Vector2, byval v2 as Vector2) as Vector2
 	declare function Vector2Negate(byval v as Vector2) as Vector2
@@ -129,12 +131,15 @@ end type
 	declare function Vector2Transform(byval v as Vector2, byval mat as Matrix) as Vector2
 	declare function Vector2Lerp(byval v1 as Vector2, byval v2 as Vector2, byval amount as single) as Vector2
 	declare function Vector2Reflect(byval v as Vector2, byval normal as Vector2) as Vector2
+	declare function Vector2Min(byval v1 as Vector2, byval v2 as Vector2) as Vector2
+	declare function Vector2Max(byval v1 as Vector2, byval v2 as Vector2) as Vector2
 	declare function Vector2Rotate(byval v as Vector2, byval angle as single) as Vector2
 	declare function Vector2MoveTowards(byval v as Vector2, byval target as Vector2, byval maxDistance as single) as Vector2
 	declare function Vector2Invert(byval v as Vector2) as Vector2
 	declare function Vector2Clamp(byval v as Vector2, byval min as Vector2, byval max as Vector2) as Vector2
 	declare function Vector2ClampValue(byval v as Vector2, byval min as single, byval max as single) as Vector2
 	declare function Vector2Equals(byval p as Vector2, byval q as Vector2) as long
+	declare function Vector2Refract(byval v as Vector2, byval n as Vector2, byval r as single) as Vector2
 	declare function Vector3Zero() as Vector3
 	declare function Vector3One() as Vector3
 	declare function Vector3Add(byval v1 as Vector3, byval v2 as Vector3) as Vector3
@@ -154,11 +159,15 @@ end type
 	declare function Vector3Negate(byval v as Vector3) as Vector3
 	declare function Vector3Divide(byval v1 as Vector3, byval v2 as Vector3) as Vector3
 	declare function Vector3Normalize(byval v as Vector3) as Vector3
+	declare function Vector3Project(byval v1 as Vector3, byval v2 as Vector3) as Vector3
+	declare function Vector3Reject(byval v1 as Vector3, byval v2 as Vector3) as Vector3
 	declare sub Vector3OrthoNormalize(byval v1 as Vector3 ptr, byval v2 as Vector3 ptr)
 	declare function Vector3Transform(byval v as Vector3, byval mat as Matrix) as Vector3
 	declare function Vector3RotateByQuaternion(byval v as Vector3, byval q as Quaternion) as Vector3
 	declare function Vector3RotateByAxisAngle(byval v as Vector3, byval axis as Vector3, byval angle as single) as Vector3
+  declare function Vector3MoveTowards(byval v as Vector3, byval target as Vector3, byval maxDistance as single) as Vector3
 	declare function Vector3Lerp(byval v1 as Vector3, byval v2 as Vector3, byval amount as single) as Vector3
+	declare function Vector3CubicHermite(byval v1 as Vector3, byval tangent1 as Vector3, byval v2 as Vector3, byval tangent2 as Vector3, byval amount as single) as Vector3
 	declare function Vector3Reflect(byval v as Vector3, byval normal as Vector3) as Vector3
 	declare function Vector3Min(byval v1 as Vector3, byval v2 as Vector3) as Vector3
 	declare function Vector3Max(byval v1 as Vector3, byval v2 as Vector3) as Vector3
@@ -170,6 +179,28 @@ end type
 	declare function Vector3ClampValue(byval v as Vector3, byval min as single, byval max as single) as Vector3
 	declare function Vector3Equals(byval p as Vector3, byval q as Vector3) as long
 	declare function Vector3Refract(byval v as Vector3, byval n as Vector3, byval r as single) as Vector3
+	declare function Vector4Zero() as Vector4
+	declare function Vector4One() as Vector4
+	declare function Vector4Add(byval v1 as Vector4, byval v2 as Vector4) as Vector4
+	declare function Vector4AddValue(byval v as Vector4, byval add as single) as Vector4
+	declare function Vector4Subtract(byval v1 as Vector4, byval v2 as Vector4) as Vector4 
+	declare function Vector4SubtractValue(byval v as Vector4, byval add as single) as Vector4
+	declare function Vector4Length(byval v as Vector4) as single
+	declare function Vector4LengthSqr(byval v as Vector4) as single
+	declare function Vector4DotProduct(byval v as Vector4, byval v2 as Vector4) as single
+	declare function Vector4Distance(byval v1 as Vector4, byval v2 as Vector4) as single
+	declare function Vector4DistanceSqr(byval v1 as Vector4, byval v2 as Vector4) as single
+	declare function Vector4Scale(byval v as Vector4, byval scale as single) as Vector4
+	declare function Vector4Multiply(byval v1 as Vector4, byval v2 as Vector4) as Vector4
+	declare function Vector4Negate(byval v as Vector4) as Vector4
+	declare function Vector4Divide(byval v1 as Vector4, v2 as Vector4) as Vector4
+	declare function Vector4Normalize(byval v as Vector4) as Vector4
+	declare function Vector4Min(byval v1 as Vector4, byval v2 as Vector4) as Vector4
+	declare function Vector4Max(byval v1 as Vector4, byval v2 as Vector4) as Vector4
+	declare function Vector4Lerp(byval v1 as Vector4, byval v2 as Vector4, byval amount as single) as Vector4
+	declare function Vector4MoveTowards(byval v as Vector4, byval target as Vector4, byval maxDistance as single) as Vector4
+	declare function Vector4Invert(byval v as Vector4) as Vector4
+	declare function Vector4Equals(byval p as Vector4, byval q as Vector4) as long
 	declare function MatrixDeterminant(byval mat as Matrix) as single
 	declare function MatrixTrace(byval mat as Matrix) as single
 	declare function MatrixTranspose(byval mat as Matrix) as Matrix
@@ -205,6 +236,7 @@ end type
 	declare function QuaternionLerp(byval q1 as Quaternion, byval q2 as Quaternion, byval amount as single) as Quaternion
 	declare function QuaternionNlerp(byval q1 as Quaternion, byval q2 as Quaternion, byval amount as single) as Quaternion
 	declare function QuaternionSlerp(byval q1 as Quaternion, byval q2 as Quaternion, byval amount as single) as Quaternion
+	declare function QuaternionCubicHermiteSpline(byval q1 as Quaternion, byval outTangent1 as Quaternion, byval q2 as Quaternion, byval inTangent2 as Quaternion, byval t as single) as Quaternion
 	declare function QuaternionFromVector3ToVector3(byval from as Vector3, byval to_ as Vector3) as Quaternion
 	declare function QuaternionFromMatrix(byval mat as Matrix) as Quaternion
 	declare function QuaternionToMatrix(byval q as Quaternion) as Matrix
@@ -214,6 +246,7 @@ end type
 	declare function QuaternionToEuler(byval q as Quaternion) as Vector3
 	declare function QuaternionTransform(byval q as Quaternion, byval mat as Matrix) as Quaternion
 	declare function QuaternionEquals(byval p as Quaternion, byval q as Quaternion) as long
+	declare sub MatrixDecompose(byval mat as Matrix, translation as Vector3 ptr, rotation as Quaternion ptr, scale as Vector3 ptr)
 #else
 	private function Clamp(byval value as single, byval min as single, byval max as single) as single
 		dim result as single = iif(value < min, min, value)
