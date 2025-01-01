@@ -8,10 +8,12 @@ extern "C"
 const PI = 3.14159265358979323846
 const MAX_TOUCH_POINTS = 8
 
-type Vector2
-	x as single
-	y as single
-end type
+#ifndef Vector2
+	type Vector2
+		x as single
+		y as single
+	end type
+#endif
 
 type TouchAction as long
 enum

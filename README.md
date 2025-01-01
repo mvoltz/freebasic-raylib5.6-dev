@@ -1,7 +1,7 @@
 # raylib-freebasic 5.6-dev
 
 ***DISCLAIMER***
-I'm a hobby programmer programming for fun. YMMV.
+I'm a hobby programmer doing this for fun. YMMV.
 Expect errors and you won't be disappointed.
 
 ---
