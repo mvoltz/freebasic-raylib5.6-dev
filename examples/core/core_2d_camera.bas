@@ -39,7 +39,7 @@ While Not WindowShouldClose()
   ElseIf IsKeyDown(KEY_LEFT) Then 
     player.x -= 2
   End If
-  camera.target = Vector2(player.x + 20, player.y + 20)
+  camera.target = Vector2(player.x + 20.0, player.y + 20.0)
   if IsKeyDown(KEY_A) Then 
     camera.rotation -= 1
   ElseIf IsKeyDown(KEY_S) Then 

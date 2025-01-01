@@ -1,35 +1,18 @@
 #pragma once
 
-''#include once "stdboolean.bi"
+#include once "stdbool.bi"
 
 extern "C"
 
 #define RLGL_H
 #define RLGL_VERSION "5.0"
 #define RLAPI
-
-#ifndef TRACELOG
-	#define TRACELOG(level, __VA_ARGS__...) 0
-#endif
-
+#define TRACELOG(level, __VA_ARGS__...) 0
 #define TRACELOGD(__VA_ARGS__...) 0
-
-#ifndef RL_MALLOC
-	#define RL_MALLOC(sz) malloc(sz)
-#endif
-
-#ifndef RL_CALLOC
-	#define RL_CALLOC(n, sz) calloc(n, sz)
-#endif
-
-#ifndef RL_REALLOC
-	#define RL_REALLOC(n, sz) realloc(n, sz)
-#endif
-
-#ifndef RL_FREE
-	#define RL_FREE(p) free(p)
-#endif
-
+#define RL_MALLOC(sz) malloc(sz)
+#define RL_CALLOC(n, sz) calloc(n, sz)
+#define RL_REALLOC(n, sz) realloc(n, sz)
+#define RL_FREE(p) free(p)
 #define GRAPHICS_API_OPENGL_33
 #define RLGL_RENDER_TEXTURES_HINT
 const RL_DEFAULT_BATCH_BUFFER_ELEMENTS = 8192
@@ -115,26 +98,24 @@ const RL_DEFAULT_SHADER_ATTRIB_LOCATION_TEXCOORD2 = 5
 const RL_DEFAULT_SHADER_ATTRIB_LOCATION_INDICES = 6
 const RL_DEFAULT_SHADER_ATTRIB_LOCATION_INSTANCE_TX = 9
 
-#ifndef Matrix
-	type Matrix
-		m0 as single
-		m4 as single
-		m8 as single
-		m12 as single
-		m1 as single
-		m5 as single
-		m9 as single
-		m13 as single
-		m2 as single
-		m6 as single
-		m10 as single
-		m14 as single
-		m3 as single
-		m7 as single
-		m11 as single
-		m15 as single
-	end type
-#endif
+type Matrix
+	m0 as single
+	m4 as single
+	m8 as single
+	m12 as single
+	m1 as single
+	m5 as single
+	m9 as single
+	m13 as single
+	m2 as single
+	m6 as single
+	m10 as single
+	m14 as single
+	m3 as single
+	m7 as single
+	m11 as single
+	m15 as single
+end type
 
 #define RL_MATRIX_TYPE
 
@@ -351,7 +332,7 @@ declare sub rlNormal3f(byval x as single, byval y as single, byval z as single)
 declare sub rlColor4ub(byval r as ubyte, byval g as ubyte, byval b as ubyte, byval a as ubyte)
 declare sub rlColor3f(byval x as single, byval y as single, byval z as single)
 declare sub rlColor4f(byval x as single, byval y as single, byval z as single, byval w as single)
-declare function rlEnableVertexArray(byval vaoId as ulong) as boolean
+declare function rlEnableVertexArray(byval vaoId as ulong) as bool
 declare sub rlDisableVertexArray()
 declare sub rlEnableVertexBuffer(byval id as ulong)
 declare sub rlDisableVertexBuffer()
@@ -382,7 +363,7 @@ declare sub rlEnableDepthMask()
 declare sub rlDisableDepthMask()
 declare sub rlEnableBackfaceCulling()
 declare sub rlDisableBackfaceCulling()
-declare sub rlColorMask(byval r as boolean, byval g as boolean, byval b as boolean, byval a as boolean)
+declare sub rlColorMask(byval r as bool, byval g as bool, byval b as bool, byval a as bool)
 declare sub rlSetCullFace(byval mode as long)
 declare sub rlEnableScissorTest()
 declare sub rlDisableScissorTest()
@@ -396,7 +377,7 @@ declare sub rlEnableSmoothLines()
 declare sub rlDisableSmoothLines()
 declare sub rlEnableStereoRender()
 declare sub rlDisableStereoRender()
-declare function rlIsStereoRenderEnabled() as boolean
+declare function rlIsStereoRenderEnabled() as bool
 declare sub rlClearColor(byval r as ubyte, byval g as ubyte, byval b as ubyte, byval a as ubyte)
 declare sub rlClearScreenBuffers()
 declare sub rlCheckErrors()
@@ -419,16 +400,16 @@ declare sub rlUnloadRenderBatch(byval batch as rlRenderBatch)
 declare sub rlDrawRenderBatch(byval batch as rlRenderBatch ptr)
 declare sub rlSetRenderBatchActive(byval batch as rlRenderBatch ptr)
 declare sub rlDrawRenderBatchActive()
-declare function rlCheckRenderBatchLimit(byval vCount as long) as boolean
+declare function rlCheckRenderBatchLimit(byval vCount as long) as bool
 declare sub rlSetTexture(byval id as ulong)
 declare function rlLoadVertexArray() as ulong
-declare function rlLoadVertexBuffer(byval buffer as const any ptr, byval size as long, byval dynamic as boolean) as ulong
-declare function rlLoadVertexBufferElement(byval buffer as const any ptr, byval size as long, byval dynamic as boolean) as ulong
+declare function rlLoadVertexBuffer(byval buffer as const any ptr, byval size as long, byval dynamic as bool) as ulong
+declare function rlLoadVertexBufferElement(byval buffer as const any ptr, byval size as long, byval dynamic as bool) as ulong
 declare sub rlUpdateVertexBuffer(byval bufferId as ulong, byval data as const any ptr, byval dataSize as long, byval offset as long)
 declare sub rlUpdateVertexBufferElements(byval id as ulong, byval data as const any ptr, byval dataSize as long, byval offset as long)
 declare sub rlUnloadVertexArray(byval vaoId as ulong)
 declare sub rlUnloadVertexBuffer(byval vboId as ulong)
-declare sub rlSetVertexAttribute(byval index as ulong, byval compSize as long, byval type as long, byval normalized as boolean, byval stride as long, byval offset as long)
+declare sub rlSetVertexAttribute(byval index as ulong, byval compSize as long, byval type as long, byval normalized as bool, byval stride as long, byval offset as long)
 declare sub rlSetVertexAttributeDivisor(byval index as ulong, byval divisor as long)
 declare sub rlSetVertexAttributeDefault(byval locIndex as long, byval value as const any ptr, byval attribType as long, byval count as long)
 declare sub rlDrawVertexArray(byval offset as long, byval count as long)
@@ -436,7 +417,7 @@ declare sub rlDrawVertexArrayElements(byval offset as long, byval count as long,
 declare sub rlDrawVertexArrayInstanced(byval offset as long, byval count as long, byval instances as long)
 declare sub rlDrawVertexArrayElementsInstanced(byval offset as long, byval count as long, byval buffer as const any ptr, byval instances as long)
 declare function rlLoadTexture(byval data as const any ptr, byval width as long, byval height as long, byval format as long, byval mipmapCount as long) as ulong
-declare function rlLoadTextureDepth(byval width as long, byval height as long, byval useRenderBuffer as boolean) as ulong
+declare function rlLoadTextureDepth(byval width as long, byval height as long, byval useRenderBuffer as bool) as ulong
 declare function rlLoadTextureCubemap(byval data as const any ptr, byval size as long, byval format as long, byval mipmapCount as long) as ulong
 declare sub rlUpdateTexture(byval id as ulong, byval offsetX as long, byval offsetY as long, byval width as long, byval height as long, byval format as long, byval data as const any ptr)
 declare sub rlGetGlTextureFormats(byval format as long, byval glInternalFormat as ulong ptr, byval glFormat as ulong ptr, byval glType as ulong ptr)
@@ -447,7 +428,7 @@ declare function rlReadTexturePixels(byval id as ulong, byval width as long, byv
 declare function rlReadScreenPixels(byval width as long, byval height as long) as ubyte ptr
 declare function rlLoadFramebuffer() as ulong
 declare sub rlFramebufferAttach(byval fboId as ulong, byval texId as ulong, byval attachType as long, byval texType as long, byval mipLevel as long)
-declare function rlFramebufferComplete(byval id as ulong) as boolean
+declare function rlFramebufferComplete(byval id as ulong) as bool
 declare sub rlUnloadFramebuffer(byval id as ulong)
 declare function rlLoadShaderCode(byval vsCode as const zstring ptr, byval fsCode as const zstring ptr) as ulong
 declare function rlCompileShader(byval shaderCode as const zstring ptr, byval type as long) as ulong
@@ -469,7 +450,7 @@ declare sub rlBindShaderBuffer(byval id as ulong, byval index as ulong)
 declare sub rlReadShaderBuffer(byval id as ulong, byval dest as any ptr, byval count as ulong, byval offset as ulong)
 declare sub rlCopyShaderBuffer(byval destId as ulong, byval srcId as ulong, byval destOffset as ulong, byval srcOffset as ulong, byval count as ulong)
 declare function rlGetShaderBufferSize(byval id as ulong) as ulong
-declare sub rlBindImageTexture(byval id as ulong, byval index as ulong, byval format as long, byval readonly as boolean)
+declare sub rlBindImageTexture(byval id as ulong, byval index as ulong, byval format as long, byval readonly as bool)
 declare function rlGetMatrixModelview() as Matrix
 declare function rlGetMatrixProjection() as Matrix
 declare function rlGetMatrixTransform() as Matrix
