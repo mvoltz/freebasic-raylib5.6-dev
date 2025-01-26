@@ -59,12 +59,12 @@ While Not WindowShouldClose()
       camera.zoom = Clamp(camera.zoom*scaleFactor, 0.125, 64.0)
     End If
   End If
-    
-      
+
+
   BeginDrawing()
-  
+
     ClearBackground(RAYWHITE)
-    
+
     BeginMode2D(camera)
       '' grid
       rlPushMatrix()
@@ -74,7 +74,7 @@ While Not WindowShouldClose()
       rlPopMatrix()
 
       DrawCircle(GetScreenWidth()/2, GetScreenHeight()/2, 50, MAROON)
-    
+
     EndMode2D()
     '' draw mouse reference
     DrawCircleV(GetMousePosition(), 4, DARKGRAY)
@@ -87,9 +87,8 @@ While Not WindowShouldClose()
     Else 
       DrawText("Mouse left button drag to move, mouse press and move to zoom", 20, 50, 20, DARKGRAY)
     End If
-    
+
   EndDrawing()
 
 wend
 CloseWindow()
-      

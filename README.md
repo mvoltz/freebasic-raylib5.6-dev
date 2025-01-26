@@ -2,22 +2,21 @@
 
 ***DISCLAIMER***
 I'm a hobby programmer doing this for fun. YMMV.
-Expect errors and you won't be disappointed.
+Expect errors and you won't be disappointed. Please let me know if you find any issues.
 
 ---
 
 [FreeBasic](https://freebasic.net/) bindings for [raylib](https://github.com/raysan5/raylib)  
 
-Some examples are compiling and working on linux.
-
-I'm using fbfrog to translate header files to .bi files.
-
+Some examples are compiling and working on linux. More examples should mean more bugs found/fixed.
 
 Lib | Linux | Windows | Mac | BSD |
 --- | ----- | ------- | --- | --- |
 raylib.bi | In Progress | untested |  untested |  untested
 raymath.bi | untested | untested |  untested |  untested
 raygui.bi | untested | untested | untested | untested
+
+** Testing with FreeBASIC built from source (1.20) **
 
 ## example
 ```basic
@@ -39,4 +38,10 @@ Wend
 CloseWindow()
 ```
 
-Instructions TBD
+HOWTO
+-----
+- Install Freebasic
+- Install Raylib
+- Clone this repo to a new project folder
+- In the 'examples' folder, compile and run an example to see if it works on your system
+- That's it, hopefully
